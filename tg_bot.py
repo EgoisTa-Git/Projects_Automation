@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from telebot import types
 
 from classes import Student, Manager
+from filters import find_vacant_manager, add_student_to_group, get_student
 from json_reader import read_students_data, read_managers_data
 
 load_dotenv()
@@ -24,7 +25,7 @@ def start(message):
             bot.send_message(
                 message.chat.id,
                 f'Привет, {user.name}.\n \
-                Ты записан на {user.preferred_start_time}:00'
+                Ты записан(а) на {user.preferred_start_time}:00'
             )
             return
     bot.send_message(
@@ -43,7 +44,6 @@ def get_time(message, user):
             start_time = manager.preferred_start_time
         if manager.preferred_end_time > end_time:
             end_time = manager.preferred_end_time
-    markup.add(types.KeyboardButton('В любое время'))
     for time_ in range(start_time, end_time):
         button = types.KeyboardButton(f'{time_}:00-{time_+1}:00')
         markup.add(button)
@@ -70,10 +70,22 @@ def select_time(message):
         f'Вы выбрали {answer}',
         reply_markup=types.ReplyKeyboardRemove(),
     )
+    username = f'@{message.from_user.username}'
+    user = get_student(username)
+    time_ = int(answer[:2])
+    vacant_manager = find_vacant_manager(time_, user)
+    if vacant_manager:
+        add_student_to_group(vacant_manager, time_, user)
+    else:
+        bot.send_message(
+            message.chat.id,
+            'Время уже занято. Необходимо выбрать другое время.',
+        )
+        start(message)
 
 
 if __name__ == '__main__':
-    available_time = ['В любое время']
+    available_time = []
     with open('students.json', 'r') as file:
         students_data = json.loads(file.read())
     with open('managers.json', 'r') as file:

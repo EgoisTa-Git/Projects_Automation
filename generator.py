@@ -6,7 +6,7 @@ from faker import Faker
 def create_student():
     levels = ['junior', 'novice+', 'novice']
     name = fake.name()
-    tg_username = f'@{name.replace(" ", "").lower()}'
+    tg_username = f'@{name.replace(" ", "")}'
     level = random.choice(levels)
     discord_username = f'{name.replace(" ", "")}#{random.randint(1000, 9999)}'
     is_far_east = bool(random.randint(0, 1))

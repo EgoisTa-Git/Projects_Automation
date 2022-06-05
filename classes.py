@@ -23,6 +23,9 @@ class Manager:
         self.preferred_time = preferred_time.split(':00')
         self.preferred_start_time = abs(int(self.preferred_time[0]))
         self.preferred_end_time = abs(int(self.preferred_time[1]))
+        self.timetable = {}
+        for time_ in range(self.preferred_start_time, self.preferred_end_time):
+            self.timetable[time_] = []
         self.registry.append(self)
 
     def __str__(self):
