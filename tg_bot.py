@@ -9,9 +9,8 @@ from classes import Student, Manager
 from json_reader import read_students_data, read_managers_data
 
 load_dotenv()
-api_key = os.getenv('TG_BOT_API_KEY')
-bot = telebot.TeleBot(api_key)
-available_time = []
+TG_API_KEY = os.getenv('TG_BOT_API_KEY')
+bot = telebot.TeleBot(TG_API_KEY)
 
 
 @bot.message_handler(commands=['start'])
@@ -44,6 +43,7 @@ def get_time(message, user):
             start_time = manager.preferred_start_time
         if manager.preferred_end_time > end_time:
             end_time = manager.preferred_end_time
+    markup.add(types.KeyboardButton('В любое время'))
     for time_ in range(start_time, end_time):
         button = types.KeyboardButton(f'{time_}:00-{time_+1}:00')
         markup.add(button)
@@ -57,7 +57,7 @@ def get_time(message, user):
 
 @bot.message_handler(content_types=['text'])
 def select_time(message):
-    if message.text.strip() in available_time:
+    if message.text in available_time:
         answer = message.text
     else:
         bot.send_message(
@@ -73,6 +73,7 @@ def select_time(message):
 
 
 if __name__ == '__main__':
+    available_time = ['В любое время']
     with open('students.json', 'r') as file:
         students_data = json.loads(file.read())
     with open('managers.json', 'r') as file:
