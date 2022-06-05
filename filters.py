@@ -22,3 +22,16 @@ def get_student(username):
     for user in Student.registry:
         if username == user.username:
             return user
+
+
+def get_timetable(manager):
+    message = 'Твоё расписание:\n\n'
+    for time_, students in manager.timetable.items():
+        if students:
+            message += f'На {time_}:00 группа: \n'
+            for student in students:
+                message += f'{student}, '
+            message += '\n'
+        else:
+            message += f'На {time_}:00 группы нет.\n'
+    return message

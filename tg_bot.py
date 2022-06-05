@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from telebot import types
 
 from classes import Student, Manager
-from filters import find_vacant_manager, add_student_to_group, get_student
+from filters import find_vacant_manager, add_student_to_group
+from filters import get_student, get_timetable
 from json_reader import read_students_data, read_managers_data
 
 load_dotenv()
@@ -24,8 +25,19 @@ def start(message):
         elif username == user.username and user.vote_passed:
             bot.send_message(
                 message.chat.id,
-                f'Привет, {user.name}.\n \
-                Ты записан(а) на {user.preferred_start_time}:00'
+                f'Привет, {user.name}.\n Ты записан(а) на'
+                f' {user.preferred_start_time}:00'
+            )
+            return
+    for user in Manager.registry:
+        if username == user.username:
+            bot.send_message(
+                message.chat.id,
+                f'Привет, {user.name}'
+            )
+            bot.send_message(
+                message.chat.id,
+                get_timetable(user)
             )
             return
     bot.send_message(

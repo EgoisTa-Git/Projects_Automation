@@ -11,7 +11,7 @@ class Student:
         self.registry.append(self)
 
     def __str__(self):
-        return f'{self.name}, {self.username}, level: {self.level}'
+        return f'{self.name}, {self.username}, уровень: {self.level}'
 
 
 class Manager:
