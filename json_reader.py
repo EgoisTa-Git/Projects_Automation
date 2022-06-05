@@ -1,6 +1,3 @@
-import json
-
-
 def read_students_data(data):
     for student in data:
         name = student['name']
@@ -15,10 +12,3 @@ def read_managers_data(data):
         tg_username = manager['tg_username']
         preferred_time = manager['preferred_time']
         yield name, tg_username, preferred_time
-
-
-if __name__ == '__main__':
-    with open('students.json', 'r') as file:
-        students_data = json.loads(file.read())
-    with open('managers.json', 'r') as file:
-        managers_data = json.loads(file.read())

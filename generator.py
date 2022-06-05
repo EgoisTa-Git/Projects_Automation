@@ -23,8 +23,8 @@ def create_pm():
     name = fake.name()
     tg_username = f'@{name.replace(" ", "").lower()}'
     discord_username = f'{name.replace(" ", "")}#{random.randint(1000, 9999)}'
-    preferred_start_time = random.randint(18, 20)
-    preferred_end_time = random.randint(21, 23)
+    preferred_start_time = random.randint(18, 23)
+    preferred_end_time = random.randint(preferred_start_time, 24)
     preferred_time = f'{preferred_start_time}:00-{preferred_end_time}:00'
     return {
         'name': name,
