@@ -2,6 +2,9 @@ import json
 import random
 from faker import Faker
 
+STUDENTS = 40
+MANAGERS = 3
+
 
 def create_student():
     levels = ['junior', 'novice+', 'novice']
@@ -36,15 +39,13 @@ def create_pm():
 
 if __name__ == '__main__':
     fake = Faker()
-    amount_of_students = 40
-    amount_of_managers = 3
     students = []
     managers = []
-    for _ in range(amount_of_students):
+    for _ in range(STUDENTS):
         students.append(create_student())
     with open('students.json', 'w') as file:
         file.write(json.dumps(students, skipkeys=True))
-    for _ in range(amount_of_managers):
+    for _ in range(MANAGERS):
         managers.append(create_pm())
     with open('managers.json', 'w') as file:
         file.write(json.dumps(managers, skipkeys=True))
